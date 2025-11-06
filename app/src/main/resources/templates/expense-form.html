@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Expense Form</title>
+	</head>
+	<body>
+		<!-- Action has to be the name of the endpoint -->
+		<form th:action="@{/processForm}" th:object="${expense}" method="POST">
+			<h3>Expense Registration</h3>
+			Expense:
+			<select th:field="*{categoryId}">
+				<option th:value="Food">Food</option>
+				<option th:value="Entertainement">Entertainement</option>
+				<option th:value="Commute">Commute</option>
+				<option th:value="Rent">Rent</option>
+				<option th:value="Bills">Bills</option>
+			</select>
+			<br><br>
+			Amount: <input type="text" th:field="*{amount}" />
+			<br><br>
+			<input type="submit"/>
+		</form>
+	</body>
+</html>

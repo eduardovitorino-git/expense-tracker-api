@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Expense Confirmation</title>
+	</head>
+	<body>
+		<h3>Expenses</h3>
+		<p>Expense: <span th:text="${expense.categoryId}+' - R$ '+${expense.amount}" /></p>
+	</body>
+</html>
