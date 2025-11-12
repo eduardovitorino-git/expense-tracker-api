@@ -1,14 +1,15 @@
 package com.expensetracker.app.entity;
 
 import java.sql.Date;
-import java.util.List;
-import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,78 +17,91 @@ import jakarta.persistence.Table;
 public class Expense {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.UUID)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
-	private UUID id;
+	private Long id;
+	
+	@Column(name="category_id")
+	private Long categoryId;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="receipt_id")
+	private Receipt receipt;
+	
 	@Column(name="amount")
-	private Integer amount;
-	@Column(name="currency")
-	private String currency;
+	private Long amount;
+	
 	@Column(name="description")
 	private String description;
-	@Column(name="categoryId")
-	private String categoryId;
-	@Column(name="date")
-	private Date date;
-	@Column(name="paymentMethod")
-	private String paymentMethod;
-	@Column(name="merchant")
-	private String merchant;
+	
 	@Column(name="location")
 	private String location;
-	@Column(name="recurring")
-	private boolean recurring;
-	@Column(name="createdAt")
-	private Date createdAt;
-	@Column(name="updatedAt")
-	private Date updatedAt;
+
+	@Column(name="merchant")
+	private String merchant;
+	
+	@Column(name="payment_method")
+	private String paymentMethod;
+	
 	@Column(name="deleted")
 	private boolean deleted;
 	
-	private List<String> tags;
+	@Column(name="recurring")
+	private boolean recurring;
+	
+	@Column(name="createdAt")
+	private Date createdAt;
+	
+	@Column(name="updatedAt")
+	private Date updatedAt;
 	
 	public Expense() { }
-	
-	public Expense(Integer amount, String currency, String description, String categoryId, Date date,
-			String paymentMethod, String merchant, String location, List<String> tags, boolean recurring, String notes,
-			Date createdAt, Date updatedAt, boolean deleted) {
-		this.amount = amount;
-		this.currency = currency;
-		this.description = description;
+
+	public Expense(Long categoryId, Receipt receipt, Long amount, String description, String location,
+			String merchant, String paymentMethod, boolean deleted, boolean recurring, Date createdAt, Date updatedAt) {
 		this.categoryId = categoryId;
-		this.date = date;
-		this.paymentMethod = paymentMethod;
-		this.merchant = merchant;
+		this.receipt = receipt;
+		this.amount = amount;
+		this.description = description;
 		this.location = location;
-		this.tags = tags;
+		this.merchant = merchant;
+		this.paymentMethod = paymentMethod;
+		this.deleted = deleted;
 		this.recurring = recurring;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-		this.deleted = deleted;
 	}
 
-	public UUID getId() {
+	public Long getId() {
 		return id;
 	}
-	
-	public void setId(UUID id) {
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Integer getAmount() {
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public Receipt getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
+	}
+
+	public Long getAmount() {
 		return amount;
 	}
 
-	public void setAmount(Integer amount) {
+	public void setAmount(Long amount) {
 		this.amount = amount;
-	}
-
-	public String getCurrency() {
-		return currency;
-	}
-
-	public void setCurrency(String currency) {
-		this.currency = currency;
 	}
 
 	public String getDescription() {
@@ -98,28 +112,12 @@ public class Expense {
 		this.description = description;
 	}
 
-	public String getCategoryId() {
-		return categoryId;
+	public String getLocation() {
+		return location;
 	}
 
-	public void setCategoryId(String categoryId) {
-		this.categoryId = categoryId;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public String getPaymentMethod() {
-		return paymentMethod;
-	}
-
-	public void setPaymentMethod(String paymentMethod) {
-		this.paymentMethod = paymentMethod;
+	public void setLocation(String location) {
+		this.location = location;
 	}
 
 	public String getMerchant() {
@@ -130,20 +128,20 @@ public class Expense {
 		this.merchant = merchant;
 	}
 
-	public String getLocation() {
-		return location;
+	public String getPaymentMethod() {
+		return paymentMethod;
 	}
 
-	public void setLocation(String location) {
-		this.location = location;
+	public void setPaymentMethod(String paymentMethod) {
+		this.paymentMethod = paymentMethod;
 	}
 
-	public List<String> getTags() {
-		return tags;
+	public boolean isDeleted() {
+		return deleted;
 	}
 
-	public void setTags(List<String> tags) {
-		this.tags = tags;
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	public boolean isRecurring() {
@@ -170,11 +168,11 @@ public class Expense {
 		this.updatedAt = updatedAt;
 	}
 
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
+	@Override
+	public String toString() {
+		return "Expense [id=" + id + ", categoryId=" + categoryId + ", receipt=" + receipt + ", amount=" + amount
+				+ ", description=" + description + ", location=" + location + ", merchant=" + merchant
+				+ ", paymentMethod=" + paymentMethod + ", deleted=" + deleted + ", recurring=" + recurring
+				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 }
