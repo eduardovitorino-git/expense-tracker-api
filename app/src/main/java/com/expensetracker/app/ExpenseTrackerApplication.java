@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.entity.Receipt;
 import com.expensetracker.app.service.ExpenseService;
+import com.expensetracker.app.service.ReceiptService;
 
 @SpringBootApplication
 public class ExpenseTrackerApplication {
@@ -17,23 +18,36 @@ public class ExpenseTrackerApplication {
 	}
 	
 	@Bean
-	CommandLineRunner commandLineRunner(ExpenseService service) {
+	CommandLineRunner commandLineRunner(ExpenseService service, ReceiptService receiptService) {
 		return runner -> {
 			System.out.println("\n\n\nInitiating application...\n\n\n");
 //			addExpense(service);
 //			getExpense(service);
-			deleteExpense(service);
+//			deleteExpense(service);
+			getReceipt(receiptService);
 		};
 	}
 
 	
+	private void getReceipt(ReceiptService receiptService) {
+    	System.out.println("Querying Expense...\n");
+        Receipt receipt = receiptService.findById(4L);
+        
+    	System.out.println("\nPrinting receipt results\n");
+        System.out.println(receipt.toString());
+        
+    	System.out.println("\nPrinting expense\n");
+        System.out.println(receipt.getExpense().toString());
+	}
+
+
 //	public List<Expense> getAll(ExpenseService service) {
 //		return service.findAll();
 //	}
 //	
     public void getExpense(ExpenseService service) {
     	System.out.println("Querying Expense...\n");
-        Expense expense = service.findById(1L);
+        Expense expense = service.findById(4L);
     	System.out.println("\nPrinting expense results\n");
         System.out.println(expense.toString());
     	System.out.println("\nPrinting receipt\n");

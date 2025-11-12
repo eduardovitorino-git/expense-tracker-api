@@ -2,11 +2,13 @@ package com.expensetracker.app.entity;
 
 import java.sql.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -17,9 +19,6 @@ public class Receipt {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private Long id;
-	
-	@Column(name="expense_id")
-	private Expense expense;
 	
 	@Column(name="receipt_image")
 	private String receiptImage;
@@ -44,6 +43,9 @@ public class Receipt {
 	
 	@Column(name="updatedAt")
 	private Date updatedAt;
+
+	@OneToOne(mappedBy="receipt", cascade=CascadeType.ALL)
+	private Expense expense;
 
 	public Receipt() { }
 			
@@ -138,5 +140,12 @@ public class Receipt {
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
+	}
+
+	@Override
+	public String toString() {
+		return "Receipt [id=" + id + ", receiptImage=" + receiptImage + ", ocrExtractedText=" + ocrExtractedText
+				+ ", merchantName=" + merchantName + ", merchantAddress=" + merchantAddress + ", scanDate=" + scanDate
+				+ ", deleted=" + deleted + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 }
