@@ -24,12 +24,13 @@ public class ExpenseTrackerApplication {
 //			addExpense(service);
 //			getExpense(service);
 //			deleteExpense(service);
-			getReceipt(receiptService);
+//			getReceipt(receiptService);
+			deleteReceipt(receiptService);
 		};
 	}
 
 	
-	private void getReceipt(ReceiptService receiptService) {
+	public void getReceipt(ReceiptService receiptService) {
     	System.out.println("Querying Expense...\n");
         Receipt receipt = receiptService.findById(4L);
         
@@ -41,10 +42,6 @@ public class ExpenseTrackerApplication {
 	}
 
 
-//	public List<Expense> getAll(ExpenseService service) {
-//		return service.findAll();
-//	}
-//	
     public void getExpense(ExpenseService service) {
     	System.out.println("Querying Expense...\n");
         Expense expense = service.findById(4L);
@@ -70,16 +67,22 @@ public class ExpenseTrackerApplication {
         System.out.println(dbExpense.toString());
     }
 
-//    public Expense updateExpense(@RequestBody Expense theExpense) {
-//        Expense dbExpense = service.save(theExpense);
-//        return dbExpense;
-//    }
 
     public void deleteExpense(ExpenseService service) {
     	System.out.println("Querying Expense...\n");
         Expense expense = service.findById(3L);
     	System.out.println("Deleting Expense...\n");
         service.remove(expense);
+    	System.out.println("\nExpense deleted\n");
+    }
+    
+    public void deleteReceipt(ReceiptService service) {
+    	System.out.println("Querying Expense...\n");
+        Receipt receipt = service.findById(5L);
+        
+    	System.out.println("Deleting Expense...\n");
+        service.remove(receipt);
+        
     	System.out.println("\nExpense deleted\n");
     }
     

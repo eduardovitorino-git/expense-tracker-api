@@ -5,5 +5,6 @@ import com.expensetracker.app.entity.Receipt;
 public interface ReceiptService {
 	
 	Receipt findById(Long theId);
-	
+
+	void remove(Receipt receipt);
 }

@@ -44,7 +44,7 @@ public class Receipt {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 
-	@OneToOne(mappedBy="receipt", cascade=CascadeType.ALL)
+	@OneToOne(mappedBy="receipt", cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Expense expense;
 
 	public Receipt() { }

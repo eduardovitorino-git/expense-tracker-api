@@ -28,4 +28,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 	    }
 	    return receipt;
 	}
+
+	@Override
+	public void remove(Receipt receipt) {
+		// break bi-directional relationship with Expense
+		receipt.getExpense().setReceipt(null);
+		repo.delete(receipt);
+	}
 }
