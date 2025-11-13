@@ -1,6 +1,8 @@
 package com.expensetracker.app.entity;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -9,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -20,13 +23,6 @@ public class Expense {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="id")
 	private Long id;
-	
-	@Column(name="category_id")
-	private Long categoryId;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="receipt_id")
-	private Receipt receipt;
 	
 	@Column(name="amount")
 	private Long amount;
@@ -55,12 +51,19 @@ public class Expense {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="receipt_id")
+	private Receipt receipt;
+	
+	@OneToMany(mappedBy="expense", 
+			   cascade={CascadeType.DETACH, CascadeType.MERGE, 
+					CascadeType.PERSIST, CascadeType.REFRESH})
+	private List<Category> listCategory;
+	
 	public Expense() { }
 
-	public Expense(Long categoryId, Receipt receipt, Long amount, String description, String location,
+	public Expense(Long amount, String description, String location,
 			String merchant, String paymentMethod, boolean deleted, boolean recurring, Date createdAt, Date updatedAt) {
-		this.categoryId = categoryId;
-		this.receipt = receipt;
 		this.amount = amount;
 		this.description = description;
 		this.location = location;
@@ -78,22 +81,6 @@ public class Expense {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
-	}
-
-	public Receipt getReceipt() {
-		return receipt;
-	}
-
-	public void setReceipt(Receipt receipt) {
-		this.receipt = receipt;
 	}
 
 	public Long getAmount() {
@@ -167,10 +154,32 @@ public class Expense {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+	
+	public Receipt getReceipt() {
+		return receipt;
+	}
+
+	public void setReceipt(Receipt receipt) {
+		this.receipt = receipt;
+	}
+
+	public List<Category> getListCategory() {
+		return listCategory;
+	}
+	
+	public void addCategory(Category category) {
+		if(listCategory == null) listCategory = new ArrayList<>();
+		listCategory.add(category);
+		category.setExpense(this);
+	}
+
+	public void setListCategory(List<Category> category) {
+		this.listCategory = category;
+	}
 
 	@Override
 	public String toString() {
-		return "Expense [id=" + id + ", categoryId=" + categoryId + ", receipt=" + receipt + ", amount=" + amount
+		return "Expense [id=" + id + ", amount=" + amount
 				+ ", description=" + description + ", location=" + location + ", merchant=" + merchant
 				+ ", paymentMethod=" + paymentMethod + ", deleted=" + deleted + ", recurring=" + recurring
 				+ ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";

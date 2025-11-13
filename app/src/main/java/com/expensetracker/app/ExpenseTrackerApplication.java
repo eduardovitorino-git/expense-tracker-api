@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import com.expensetracker.app.entity.Category;
 import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.entity.Receipt;
 import com.expensetracker.app.service.ExpenseService;
@@ -25,11 +26,39 @@ public class ExpenseTrackerApplication {
 //			getExpense(service);
 //			deleteExpense(service);
 //			getReceipt(receiptService);
-			deleteReceipt(receiptService);
+//			deleteReceipt(receiptService);
+//			createExpenseWithCategories(service);
 		};
 	}
 
 	
+	public void addExpense(ExpenseService service) {
+    	Expense expense = new Expense();
+    	expense.setAmount(100L);
+    	expense.setDescription("First expense");
+    	
+    	Receipt receipt = new Receipt();
+    	receipt.setReceiptImage("image.png");
+    	receipt.setMerchantName("Padaria");
+    	receipt.setOcrExtractedText("100 - Pão Francês");
+    	
+    	expense.setReceipt(receipt);
+    	
+        Expense dbExpense = service.save(expense);
+        System.out.println(dbExpense.toString());
+    }
+	
+	public void createExpenseWithCategories(ExpenseService service) {
+    	Expense expense = new Expense();
+    	expense.setAmount(30L);
+    	expense.setDescription("Daily meal");
+    	expense.addCategory(new Category("Food", "Foods that I need", false));
+    	expense.addCategory(new Category("Recurent", "Daily expense", false));
+    	expense.addCategory(new Category("Important", "Important expense", false));
+    	
+        Expense dbExpense = service.save(expense);
+        System.out.println(dbExpense.toString());
+    }
 	public void getReceipt(ReceiptService receiptService) {
     	System.out.println("Querying Expense...\n");
         Receipt receipt = receiptService.findById(4L);
@@ -50,23 +79,6 @@ public class ExpenseTrackerApplication {
     	System.out.println("\nPrinting receipt\n");
         System.out.println(expense.getReceipt().toString());
     }
-
-    public void addExpense(ExpenseService service) {
-    	Expense expense = new Expense();
-    	expense.setAmount(100L);
-    	expense.setDescription("First expense");
-    	
-    	Receipt receipt = new Receipt();
-    	receipt.setReceiptImage("image.png");
-    	receipt.setMerchantName("Padaria");
-    	receipt.setOcrExtractedText("100 - Pão Francês");
-    	
-    	expense.setReceipt(receipt);
-    	
-        Expense dbExpense = service.save(expense);
-        System.out.println(dbExpense.toString());
-    }
-
 
     public void deleteExpense(ExpenseService service) {
     	System.out.println("Querying Expense...\n");
