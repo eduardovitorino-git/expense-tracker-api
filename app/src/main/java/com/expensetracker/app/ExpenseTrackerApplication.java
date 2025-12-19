@@ -28,9 +28,66 @@ public class ExpenseTrackerApplication {
 //			getReceipt(receiptService);
 //			deleteReceipt(receiptService);
 //			createExpenseWithCategories(service);
+//			findExpenseWithCategories(service);
+//			findExpenseJoinFetchCategories(service);
+//			updateExpense(service);
+//			deleteExpenseJoinFetch(service);
 		};
 	}
 
+	public void createExpenseWithCategories(ExpenseService service) {
+    	Expense expense = new Expense();
+    	expense.setAmount(30L);
+    	expense.setDescription("Daily meal");
+    	expense.addCategory(new Category("Food", "Foods that I need", false));
+    	expense.addCategory(new Category("Recurent", "Daily expense", false));
+    	expense.addCategory(new Category("Important", "Important expense", false));
+    	
+    	Receipt receipt = new Receipt();
+    	receipt.setReceiptImage("image.png");
+    	receipt.setMerchantName("Padaria");
+    	receipt.setOcrExtractedText("100 - Pão Francês");
+    	
+    	expense.setReceipt(receipt);
+    	
+        Expense dbExpense = service.save(expense);
+        System.out.println(dbExpense.toString());
+    }
+	
+	public void findExpenseWithCategories(ExpenseService service) {
+		Long id = 2l;
+		
+		Expense expense = service.findById(id);
+        System.out.println(expense.toString());
+        
+        expense.setListCategory(service.findCategoriesByExpenseId(id));
+        System.out.println("\n\n *** COURSES *** \n\n");
+        System.out.println(expense.getListCategory());
+        System.out.println("\n\n *** COURSES *** \n\n");
+    }
+	
+	public void findExpenseJoinFetchCategories(ExpenseService service) {
+		Long id = 1l;
+		
+		Expense expense = service.findByIdJoinFetch(id);
+        System.out.println(expense.toString());
+        
+        System.out.println("\n\n *** COURSES *** \n\n");
+        System.out.println(expense.getListCategory());
+        System.out.println("\n\n *** COURSES *** \n\n");
+    }
+	
+	public void updateExpense(ExpenseService service) {
+		Long id = 1l;
+		
+		System.out.println("\n\n *** QUERYING EXPENSE *** \n\n");
+		Expense expense = service.findByIdJoinFetch(id);
+		
+		expense.setAmount(50L);
+        
+        System.out.println("\n\n *** UPDATING EXPENSE *** \n\n");
+        service.save(expense);
+    }
 	
 	public void addExpense(ExpenseService service) {
     	Expense expense = new Expense();
@@ -48,17 +105,6 @@ public class ExpenseTrackerApplication {
         System.out.println(dbExpense.toString());
     }
 	
-	public void createExpenseWithCategories(ExpenseService service) {
-    	Expense expense = new Expense();
-    	expense.setAmount(30L);
-    	expense.setDescription("Daily meal");
-    	expense.addCategory(new Category("Food", "Foods that I need", false));
-    	expense.addCategory(new Category("Recurent", "Daily expense", false));
-    	expense.addCategory(new Category("Important", "Important expense", false));
-    	
-        Expense dbExpense = service.save(expense);
-        System.out.println(dbExpense.toString());
-    }
 	public void getReceipt(ReceiptService receiptService) {
     	System.out.println("Querying Expense...\n");
         Receipt receipt = receiptService.findById(4L);
@@ -69,8 +115,7 @@ public class ExpenseTrackerApplication {
     	System.out.println("\nPrinting expense\n");
         System.out.println(receipt.getExpense().toString());
 	}
-
-
+	
     public void getExpense(ExpenseService service) {
     	System.out.println("Querying Expense...\n");
         Expense expense = service.findById(4L);
@@ -82,7 +127,15 @@ public class ExpenseTrackerApplication {
 
     public void deleteExpense(ExpenseService service) {
     	System.out.println("Querying Expense...\n");
-        Expense expense = service.findById(3L);
+        Expense expense = service.findById(1L);
+    	System.out.println("Deleting Expense...\n");
+        service.remove(expense);
+    	System.out.println("\nExpense deleted\n");
+    }
+    
+    public void deleteExpenseJoinFetch(ExpenseService service) {
+    	System.out.println("Querying Expense...\n");
+        Expense expense = service.findByIdJoinFetch(1L);
     	System.out.println("Deleting Expense...\n");
         service.remove(expense);
     	System.out.println("\nExpense deleted\n");

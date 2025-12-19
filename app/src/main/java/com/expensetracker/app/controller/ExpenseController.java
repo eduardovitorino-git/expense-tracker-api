@@ -1,11 +1,11 @@
 package com.expensetracker.app.controller;
 
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,6 +33,10 @@ public class ExpenseController {
 		return service.findAll();
 	}
 	
+	@GetMapping("/players/{id}")
+	public Expense findById(@PathVariable Long id) {
+		return service.findById(id);
+	}
 	
     @GetMapping("/Expenses/{ExpenseId}")
     public Expense getExpense(@PathVariable Long ExpenseId) {
@@ -88,22 +92,13 @@ public class ExpenseController {
         return "Deleted Expense id - " + ExpenseId;
     }
 	
-	
-	// Model is for sharing data between controller and view
-	@GetMapping("/expenseForm")
-	public String showForm(Model model) {
-		model.addAttribute("expense", new Expense());
-		return "expense-form";
-	}
-	
-//	@GetMapping("/processForm")
-//	public String processForm() {
-//		return "hello";
+//	@PatchMapping("/players/{id}")
+//	public Expense patch(@PathVariable Long id, @RequestBody Map<String, Object> patchPayload) {
+//		return service.update(id, patchPayload);
 //	}
-	
-	// HttpServletRequest is a object for the HTML elements
-	@PostMapping("/processForm")
-	public String processForm(@ModelAttribute("expense") Expense expense) {
-		return "expense-confirmation";
-	}
+//	
+//	@DeleteMapping("/players/{id}")
+//	public String delete(@PathVariable Long id) {
+//		return service.deleteById(id);
+//	}
 }
