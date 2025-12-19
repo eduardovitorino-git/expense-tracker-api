@@ -3,6 +3,7 @@ package com.expensetracker.app.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -10,13 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.service.ExpenseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-//@Controller
-//@RequestMapping("/api")
+@Controller
+@RequestMapping("/api")
 public class ExpenseController {
 	
 	private ExpenseService service;
@@ -33,72 +35,34 @@ public class ExpenseController {
 		return service.findAll();
 	}
 	
-	@GetMapping("/players/{id}")
-	public Expense findById(@PathVariable Long id) {
-		return service.findById(id);
+    @GetMapping("/expenses/{id}")
+    public Expense getExpense(@PathVariable Long id) {
+    	return service.findById(id);
+    }
+    
+    @PostMapping("/expenses")
+    public Expense addExpense(@RequestBody Expense theExpense) {
+        theExpense.setId(null);
+        return service.save(theExpense);
+    }
+
+    @PutMapping("/expenses")
+    public Expense updateExpense(@RequestBody Expense theExpense) {
+    	return service.save(theExpense);
+    }
+
+    @DeleteMapping("/expenses/{id}")
+    public String deleteExpense(@PathVariable Long id) {
+        return service.deleteById(id);
+    }
+	
+	@PatchMapping("/expenses/{id}")
+	public Expense patch(@PathVariable Long id, @RequestBody Map<String, Object> patchPayload) {
+		return service.update(id, patchPayload);
 	}
 	
-    @GetMapping("/Expenses/{ExpenseId}")
-    public Expense getExpense(@PathVariable Long ExpenseId) {
-
-        Expense theExpense = service.findById(ExpenseId);
-
-        if (theExpense == null) {
-            throw new RuntimeException("Expense id not found - " + ExpenseId);
-        }
-
-        return theExpense;
-    }
-
-
-    @PostMapping("/Expenses")
-    public Expense addExpense(@RequestBody Expense theExpense) {
-
-        // also just in case they pass an id in JSON ... set id to 0
-        // this is to force a save of new item ... instead of update
-
-        theExpense.setId(null);
-
-        Expense dbExpense = service.save(theExpense);
-
-        return dbExpense;
-    }
-
-    // add mapping for PUT /Expenses - update existing Expense
-
-    @PutMapping("/Expenses")
-    public Expense updateExpense(@RequestBody Expense theExpense) {
-
-        Expense dbExpense = service.save(theExpense);
-
-        return dbExpense;
-    }
-
-    // add mapping for DELETE /Expenses/{ExpenseId} - delete Expense
-
-    @DeleteMapping("/Expenses/{ExpenseId}")
-    public String deleteExpense(@PathVariable Long ExpenseId) {
-
-        Expense tempExpense = service.findById(ExpenseId);
-
-        // throw exception if null
-
-        if (tempExpense == null) {
-            throw new RuntimeException("Expense id not found - " + ExpenseId);
-        }
-
-        service.deleteById(ExpenseId);
-
-        return "Deleted Expense id - " + ExpenseId;
-    }
-	
-//	@PatchMapping("/players/{id}")
-//	public Expense patch(@PathVariable Long id, @RequestBody Map<String, Object> patchPayload) {
-//		return service.update(id, patchPayload);
-//	}
-//	
-//	@DeleteMapping("/players/{id}")
-//	public String delete(@PathVariable Long id) {
-//		return service.deleteById(id);
-//	}
+	@DeleteMapping("/expenses/{id}")
+	public String delete(@PathVariable Long id) {
+		return service.deleteById(id);
+	}
 }

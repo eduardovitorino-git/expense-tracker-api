@@ -129,7 +129,7 @@ public class ExpenseTrackerApplication {
     	System.out.println("Querying Expense...\n");
         Expense expense = service.findById(1L);
     	System.out.println("Deleting Expense...\n");
-        service.remove(expense);
+        service.delete(expense);
     	System.out.println("\nExpense deleted\n");
     }
     
@@ -137,7 +137,7 @@ public class ExpenseTrackerApplication {
     	System.out.println("Querying Expense...\n");
         Expense expense = service.findByIdJoinFetch(1L);
     	System.out.println("Deleting Expense...\n");
-        service.remove(expense);
+        service.delete(expense);
     	System.out.println("\nExpense deleted\n");
     }
     
