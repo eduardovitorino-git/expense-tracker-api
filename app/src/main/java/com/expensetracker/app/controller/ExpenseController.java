@@ -50,11 +50,6 @@ public class ExpenseController {
     public Expense updateExpense(@RequestBody Expense theExpense) {
     	return service.save(theExpense);
     }
-
-    @DeleteMapping("/expenses/{id}")
-    public String deleteExpense(@PathVariable Long id) {
-        return service.deleteById(id);
-    }
 	
 	@PatchMapping("/expenses/{id}")
 	public Expense patch(@PathVariable Long id, @RequestBody Map<String, Object> patchPayload) {
