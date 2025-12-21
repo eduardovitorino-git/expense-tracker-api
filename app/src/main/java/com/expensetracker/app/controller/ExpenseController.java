@@ -3,7 +3,6 @@ package com.expensetracker.app.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,22 +11,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.service.ExpenseService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Controller
+@RestController
 @RequestMapping("/api")
 public class ExpenseController {
 	
 	private ExpenseService service;
-	@SuppressWarnings("unused")
-	private ObjectMapper obj;
 	
-	public ExpenseController(ExpenseService expenseService, ObjectMapper objectMapper) {
+	public ExpenseController(ExpenseService expenseService) {
 		this.service = expenseService;
-		this.obj = objectMapper;
 	}
 	
 	@GetMapping("/expenses")
