@@ -17,7 +17,7 @@ API REST para controle de despesas pessoais.
 ## Como executar
 ```bash
 git clone https://github.com/eduardovitorino-git/expense-tracker-api.git
-cd expense-tracker
+cd expense-tracker-api/app/
 docker-compose up -d
 ./mvnw spring-boot:run
 ```
