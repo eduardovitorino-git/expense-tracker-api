@@ -5,12 +5,13 @@ import java.util.Map;
 
 import com.expensetracker.app.entity.Category;
 import com.expensetracker.app.entity.Expense;
+import com.expensetracker.app.entity.ExpenseDTO;
 
 public interface ExpenseService {
 
-	List<Expense> findAll();
+	List<ExpenseDTO> findAll();
 	
-	Expense findById(Long theId);
+	ExpenseDTO findById(Long theId);
 	
 	Expense findByIdJoinFetch(Long theId);
 

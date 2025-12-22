@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -51,11 +52,12 @@ public class Expense {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="receipt_id")
 	private Receipt receipt;
 	
 	@OneToMany(mappedBy="expense", 
+			   fetch=FetchType.LAZY,
 			   cascade={CascadeType.DETACH, CascadeType.MERGE, 
 					CascadeType.PERSIST, CascadeType.REFRESH})
 	private List<Category> listCategory;

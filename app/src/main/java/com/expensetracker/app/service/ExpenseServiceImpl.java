@@ -1,5 +1,6 @@
 package com.expensetracker.app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com.expensetracker.app.entity.Category;
 import com.expensetracker.app.entity.Expense;
+import com.expensetracker.app.entity.ExpenseDTO;
+import com.expensetracker.app.entity.Receipt;
+import com.expensetracker.app.entity.ReceiptDTO;
 import com.expensetracker.app.exception.ExpenseNotFoundException;
 import com.expensetracker.app.repository.ExpenseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,15 +37,69 @@ public class ExpenseServiceImpl implements ExpenseService {
 	}
 
 	@Override
-	public List<Expense> findAll() {
-		return repo.findAll();
+	public List<ExpenseDTO> findAll() {
+		List<ExpenseDTO> expenseDtos = new ArrayList<>();
+		List<Expense> expenses = repo.findAll();
+		
+		for(Expense expense : expenses) {
+			Receipt receipt = expense.getReceipt();
+			
+			expenseDtos.add(new ExpenseDTO(
+						expense.getId(),
+						expense.getAmount(),
+						expense.getDescription(),
+						expense.getLocation(),
+						expense.getMerchant(),
+						expense.getPaymentMethod(),
+						expense.isDeleted(),
+						expense.isRecurring(),
+						expense.getCreatedAt(),
+						expense.getCreatedAt(),
+						new ReceiptDTO(
+								receipt.getId(),
+								receipt.getReceiptImage(),
+								receipt.getOcrExtractedText(),
+								receipt.getMerchantName(),
+								receipt.getMerchantAddress(),
+								receipt.getScanDate(),
+								receipt.isDeleted(),
+								receipt.getCreatedAt(),
+								receipt.getUpdatedAt()
+							)
+					));
+		}
+		return expenseDtos;
 	}
 
 	@Override
-	public Expense findById(Long id) {
-		Optional<Expense> dbPlayer = repo.findById(id);
-		if(!dbPlayer.isPresent()) throw new ExpenseNotFoundException("Expense not found. ID: " + id);
-		return dbPlayer.get();
+	public ExpenseDTO findById(Long id) {
+		Optional<Expense> dbExpense = repo.findById(id);
+		if(!dbExpense.isPresent()) throw new ExpenseNotFoundException("Expense not found. ID: " + id);
+		Expense expense = dbExpense.get();
+		Receipt receipt = expense.getReceipt();
+		return new ExpenseDTO(
+				expense.getId(),
+				expense.getAmount(),
+				expense.getDescription(),
+				expense.getLocation(),
+				expense.getMerchant(),
+				expense.getPaymentMethod(),
+				expense.isDeleted(),
+				expense.isRecurring(),
+				expense.getCreatedAt(),
+				expense.getCreatedAt(),
+				new ReceiptDTO(
+						receipt.getId(),
+						receipt.getReceiptImage(),
+						receipt.getOcrExtractedText(),
+						receipt.getMerchantName(),
+						receipt.getMerchantAddress(),
+						receipt.getScanDate(),
+						receipt.isDeleted(),
+						receipt.getCreatedAt(),
+						receipt.getUpdatedAt()
+					)
+			);
 	}
 	
 	@Override

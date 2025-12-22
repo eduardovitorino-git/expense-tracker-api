@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.expensetracker.app.entity.Expense;
+import com.expensetracker.app.entity.ExpenseDTO;
 import com.expensetracker.app.service.ExpenseService;
 
 @RestController
@@ -27,12 +28,12 @@ public class ExpenseController {
 	}
 	
 	@GetMapping("/expenses")
-	public List<Expense> getAll() {
+	public List<ExpenseDTO> getAll() {
 		return service.findAll();
 	}
 	
     @GetMapping("/expenses/{id}")
-    public Expense getExpense(@PathVariable Long id) {
+    public ExpenseDTO getExpense(@PathVariable Long id) {
     	return service.findById(id);
     }
     
