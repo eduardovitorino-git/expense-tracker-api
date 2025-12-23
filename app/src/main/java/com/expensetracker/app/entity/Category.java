@@ -48,61 +48,37 @@ public class Category {
 		this.description = description;
 		this.deleted = deleted;
 	}
-
+	
+	public void addExpense(Expense expense) {
+		this.expense = expense;
+	}
+	
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getDescription() {
 		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 
 	public boolean isDeleted() {
 		return deleted;
 	}
 
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
-	}
-
 	public Date getCreatedAt() {
 		return createdAt;
-	}
-
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
 	}
 
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
-	}
-
 	public Expense getExpense() {
 		return expense;
-	}
-
-	public void setExpense(Expense expense) {
-		this.expense = expense;
 	}
 
 	@Override

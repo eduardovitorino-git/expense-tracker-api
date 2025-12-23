@@ -61,85 +61,62 @@ public class Receipt {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
+	
+	public Receipt(Long id, String receiptImage, String ocrExtractedText, String merchantName,
+			String merchantAddress, Date scanDate, boolean deleted, Date createdAt, Date updatedAt) {
+		this.id = id;
+		this.receiptImage = receiptImage;
+		this.ocrExtractedText = ocrExtractedText;
+		this.merchantName = merchantName;
+		this.merchantAddress = merchantAddress;
+		this.scanDate = scanDate;
+		this.deleted = deleted;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+	
+	public void removeExpense() {
+		this.expense = null;
+	}
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Expense getExpense() {
-		return expense;
-	}
-
-	public void setExpense(Expense expense) {
-		this.expense = expense;
 	}
 
 	public String getReceiptImage() {
 		return receiptImage;
 	}
 
-	public void setReceiptImage(String receiptImage) {
-		this.receiptImage = receiptImage;
-	}
-
 	public String getOcrExtractedText() {
 		return ocrExtractedText;
-	}
-
-	public void setOcrExtractedText(String ocrExtractedText) {
-		this.ocrExtractedText = ocrExtractedText;
 	}
 
 	public String getMerchantName() {
 		return merchantName;
 	}
 
-	public void setMerchantName(String merchantName) {
-		this.merchantName = merchantName;
-	}
-
 	public String getMerchantAddress() {
 		return merchantAddress;
-	}
-
-	public void setMerchantAddress(String merchantAddress) {
-		this.merchantAddress = merchantAddress;
 	}
 
 	public Date getScanDate() {
 		return scanDate;
 	}
 
-	public void setScanDate(Date scanDate) {
-		this.scanDate = scanDate;
-	}
-
 	public boolean isDeleted() {
 		return deleted;
-	}
-
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
 	}
 
 	public Date getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
-		this.createdAt = createdAt;
-	}
-
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
 
-	public void setUpdatedAt(Date updatedAt) {
-		this.updatedAt = updatedAt;
+	public Expense getExpense() {
+		return expense;
 	}
 
 	@Override

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.entity.ExpenseDTO;
 import com.expensetracker.app.service.ExpenseService;
 
@@ -38,18 +37,17 @@ public class ExpenseController {
     }
     
     @PostMapping("/expenses")
-    public Expense addExpense(@RequestBody Expense theExpense) {
-        theExpense.setId(null);
-        return service.save(theExpense);
+    public ExpenseDTO addExpense(@RequestBody ExpenseDTO expenseDTO) {
+        return service.save(expenseDTO);
     }
 
     @PutMapping("/expenses")
-    public Expense updateExpense(@RequestBody Expense theExpense) {
-    	return service.save(theExpense);
+    public ExpenseDTO updateExpense(@RequestBody ExpenseDTO expenseDTO) {
+    	return service.save(expenseDTO);
     }
 	
 	@PatchMapping("/expenses/{id}")
-	public Expense patch(@PathVariable Long id, @RequestBody Map<String, Object> patchPayload) {
+	public ExpenseDTO patch(@PathVariable Long id, @RequestBody Map<String, Object> patchPayload) {
 		return service.update(id, patchPayload);
 	}
 	

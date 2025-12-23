@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.expensetracker.app.entity.Category;
-import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.entity.ExpenseDTO;
 
 public interface ExpenseService {
@@ -13,14 +12,12 @@ public interface ExpenseService {
 	
 	ExpenseDTO findById(Long theId);
 	
-	Expense findByIdJoinFetch(Long theId);
+	ExpenseDTO findByIdJoinFetch(Long theId);
 
-	Expense save(Expense expense);
+	ExpenseDTO save(ExpenseDTO expense);
 	
-	Expense update(Long id, Map<String, Object> patchPayload);
+	ExpenseDTO update(Long id, Map<String, Object> patchPayload);
 
-	String delete(Expense expense);
-	
     String deleteById(Long theId);
     
     public List<Category> findCategoriesByExpenseId(Long theId);

@@ -31,8 +31,7 @@ public class ReceiptServiceImpl implements ReceiptService {
 
 	@Override
 	public void remove(Receipt receipt) {
-		// break bi-directional relationship with Expense
-		receipt.getExpense().setReceipt(null);
+		receipt.removeExpense();
 		repo.delete(receipt);
 	}
 }
