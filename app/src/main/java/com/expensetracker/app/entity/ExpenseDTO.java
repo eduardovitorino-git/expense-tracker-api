@@ -1,6 +1,7 @@
 package com.expensetracker.app.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 public record ExpenseDTO(
 		 Long id,
@@ -13,7 +14,7 @@ public record ExpenseDTO(
 		 boolean recurring,
 		 Date createdAt,
 		 Date updatedAt,
-		 ReceiptDTO receipt
+		 List<CategoryDTO> categories
 	) {
 
 }

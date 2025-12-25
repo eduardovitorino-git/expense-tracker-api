@@ -1,6 +1,7 @@
 package com.expensetracker.app.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -47,6 +48,14 @@ public class Category {
 		this.name = name;
 		this.description = description;
 		this.deleted = deleted;
+	}
+	
+	public Category(Long id, String name, String description, Expense expense) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.createdAt = Date.valueOf(LocalDate.now());
+		this.expense = expense;
 	}
 	
 	public void addExpense(Expense expense) {

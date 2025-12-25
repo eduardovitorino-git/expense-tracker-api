@@ -1,6 +1,7 @@
 package com.expensetracker.app.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,6 +89,15 @@ public class Expense {
 		this.recurring = recurring;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
+	}
+	
+	public Expense(Long id, Long amount, String description, String paymentMethod, boolean recurring, List<Category> listCategory) {
+		this.amount = amount;
+		this.description = description;
+		this.paymentMethod = paymentMethod;
+		this.recurring = recurring;
+		this.createdAt = Date.valueOf(LocalDate.now());
+		this.listCategory = listCategory;
 	}
 	
 	public void addCategory(Category category) {

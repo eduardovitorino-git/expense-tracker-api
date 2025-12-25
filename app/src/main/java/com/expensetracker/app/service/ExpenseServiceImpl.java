@@ -1,5 +1,6 @@
 package com.expensetracker.app.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -7,10 +8,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.expensetracker.app.entity.Category;
+import com.expensetracker.app.entity.CategoryDTO;
 import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.entity.ExpenseDTO;
-import com.expensetracker.app.entity.Receipt;
-import com.expensetracker.app.entity.ReceiptDTO;
 import com.expensetracker.app.exception.ExpenseNotFoundException;
 import com.expensetracker.app.repository.ExpenseRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,9 +19,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
-	private ExpenseRepository repo;
-	private CategoryService categoryService;
-	private ObjectMapper objectMapper;
+	private final ExpenseRepository repo;
+	private final CategoryService categoryService;
+	private final ObjectMapper objectMapper;
 	
 	public ExpenseServiceImpl(ExpenseRepository expenseRepository, 
 			CategoryService categoryService, ObjectMapper objectMapper) {
@@ -97,20 +97,38 @@ public class ExpenseServiceImpl implements ExpenseService {
 		
 	}
 	
-	private ReceiptDTO toDTO(Receipt receipt) {
-	    if (receipt == null) return null;
+	private List<CategoryDTO> categoryToDTO(List<Category> categories) {
+	    if (categories == null) return null;
+	    List<CategoryDTO> categoryDtos = new ArrayList<>();
 	    
-	    return new ReceiptDTO(
-	        receipt.getId(),
-	        receipt.getReceiptImage(),
-	        receipt.getOcrExtractedText(),
-	        receipt.getMerchantName(),
-	        receipt.getMerchantAddress(),
-	        receipt.getScanDate(),
-	        receipt.isDeleted(),
-	        receipt.getCreatedAt(),
-	        receipt.getUpdatedAt()
-	    );
+	    for(Category category : categories) {
+	    	categoryDtos.add(new CategoryDTO(
+	    		category.getId(),
+	    		category.getName(),
+	    		category.getDescription(),
+	    		category.isDeleted(),
+	    		category.getCreatedAt(),
+	    		category.getUpdatedAt()
+		    ));
+	    }
+	    
+	    return categoryDtos;
+	}
+	
+	private List<Category> categoryToEntity(ExpenseDTO dto) {
+	    if (dto.categories() == null) return null;
+	    List<Category> categories = new ArrayList<>();
+	    
+	    for(CategoryDTO category : dto.categories()) {
+	    	categories.add(new Category(
+	    		category.id(),
+	    		category.name(),
+	    		category.description(),
+	    		toEntity(dto)
+		    ));
+	    }
+	    
+	    return categories;
 	}
 
 	private ExpenseDTO toDTO(Expense expense) {
@@ -125,40 +143,18 @@ public class ExpenseServiceImpl implements ExpenseService {
 	        expense.isRecurring(),
 	        expense.getCreatedAt(),
 	        expense.getUpdatedAt(),
-	        toDTO(expense.getReceipt())
+	        categoryToDTO(expense.getListCategory())
 	    );
 	}
 	
 	private Expense toEntity(ExpenseDTO dto) {
-	    Receipt receipt = null;
-	    
-	    if (dto.receipt() != null) {
-	        ReceiptDTO r = dto.receipt();
-	        receipt = new Receipt(
-	            r.id(),
-	            r.receiptImage(),
-	            r.ocrExtractedText(),
-	            r.merchantName(),
-	            r.merchantAddress(),
-	            r.scanDate(),
-	            r.deleted(),
-	            r.createdAt(),
-	            r.updatedAt()
-	        );
-	    }
-	    
 	    return new Expense(
 	        dto.id(),
 	        dto.amount(),
 	        dto.description(),
-	        dto.location(),
-	        dto.merchant(),
 	        dto.paymentMethod(),
-	        dto.deleted(),
 	        dto.recurring(),
-	        dto.createdAt(),
-	        dto.updatedAt(),
-	        receipt
+	        categoryToEntity(dto)
 	    );
 	}
 }
