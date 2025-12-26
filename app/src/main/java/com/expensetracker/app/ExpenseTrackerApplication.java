@@ -18,7 +18,7 @@ public class ExpenseTrackerApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(ExpenseService service, ReceiptService receiptService) {
 		return runner -> {
-			System.out.println("\n\nInitiating application...\n\n");
+			System.out.println("\n\nApplication started! \n\nSee the docs at localhost:8080/docs\n\n");
 		};
 	}
 }
