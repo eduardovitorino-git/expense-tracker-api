@@ -43,7 +43,7 @@ public class ExpenseRestExceptionHandler {
 		/**
 		 * Exception handlers returns a ResponseEntity 
 		 * that works as a wrapper for HTTP response object.
-		 */
+		 */ 
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 }
