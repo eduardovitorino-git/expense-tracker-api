@@ -1,17 +1,25 @@
 package com.expensetracker.app.repository;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.expensetracker.app.entity.Expense;
+import org.springframework.data.repository.query.Param;
 
-public interface ExpenseRepository extends JpaRepository<Expense, Long>{
+public interface ExpenseRepository extends JpaRepository<Expense, Long>, ExpenseRepositoryCustom {
 
-	@Query("SELECT e "
-			+ "	FROM Expense e "
-			+ " JOIN FETCH e.listCategory"
-			+ " WHERE e.id = ?1")
-	Optional<Expense> findByIdJoinFetch(Long theId);
+	@Query("SELECT e " +
+			"FROM Expense e " +
+			"JOIN FETCH e.listCategory " +
+			"WHERE e.id = :id")
+	Optional<Expense> findByIdJoinFetch(@Param("status") Long id);
+
+//	@Query("SELECT DISTINCT e " +
+//			" FROM Expense e " +
+//			" LEFT JOIN FETCH e.listCategory")
+//	List<Expense> findAllJoinFetch(Sort sort);
 }

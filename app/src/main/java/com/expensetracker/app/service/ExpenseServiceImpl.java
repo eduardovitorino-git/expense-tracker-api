@@ -1,10 +1,8 @@
 package com.expensetracker.app.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.expensetracker.app.entity.Category;
@@ -38,25 +36,26 @@ public class ExpenseServiceImpl implements ExpenseService {
 	
 	@Override
 	public List<ExpenseDTO> findAll() {
-		return repo.findAll().stream()
+		return repo.findAllJoinFetch(Sort.by("amount"), new HashMap<>()).stream()
+				.map(this::toDTO)
+				.toList();
+	}
+
+	@Override
+	public List<ExpenseDTO> findAll(Long amount) {
+		Map<String, Long> criteria = new HashMap<>();
+		criteria.put("amount", amount);
+
+		return repo.findAllJoinFetch(Sort.by("amount"), criteria).stream()
 				.map(this::toDTO)
 				.toList();
 	}
 
 	@Override
 	public ExpenseDTO findById(Long id) {
-		return repo.findById(id)
+		return repo.findByIdJoinFetch(id)
 			    .map(this::toDTO)
 			    .orElseThrow(() -> new ExpenseNotFoundException("Expense not found. ID: " + id));
-	}
-	
-	@Override
-	public ExpenseDTO findByIdJoinFetch(Long theId) {
-		Optional<Expense> result = repo.findByIdJoinFetch(theId);
-	    Expense expense = null;
-	    if (result.isPresent()) expense = result.get();
-	    else throw new RuntimeException("Did not find employee id - " + theId);
-	    return toDTO(expense);
 	}
 	
 	@Override
@@ -94,7 +93,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 		expenseNode.setAll(patchNode);
 		// Convert back to Expense object and return it
 		return this.objectMapper.convertValue(expenseNode, ExpenseDTO.class);
-		
 	}
 	
 	private List<CategoryDTO> categoryToDTO(List<Category> categories) {
@@ -115,22 +113,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 	    return categoryDtos;
 	}
 	
-	private List<Category> categoryToEntity(ExpenseDTO dto) {
-	    if (dto.categories() == null) return null;
-	    List<Category> categories = new ArrayList<>();
-	    
-	    for(CategoryDTO category : dto.categories()) {
-	    	categories.add(new Category(
-	    		category.id(),
-	    		category.name(),
-	    		category.description(),
-	    		toEntity(dto)
-		    ));
-	    }
-	    
-	    return categories;
-	}
-
 	private ExpenseDTO toDTO(Expense expense) {
 	    return new ExpenseDTO(
 	        expense.getId(),
@@ -148,13 +130,27 @@ public class ExpenseServiceImpl implements ExpenseService {
 	}
 	
 	private Expense toEntity(ExpenseDTO dto) {
-	    return new Expense(
-	        dto.id(),
-	        dto.amount(),
-	        dto.description(),
-	        dto.paymentMethod(),
-	        dto.recurring(),
-	        categoryToEntity(dto)
-	    );
+		Expense expense = new Expense(
+				dto.id(),
+				dto.amount(),
+				dto.description(),
+				dto.paymentMethod(),
+				dto.recurring(),
+				new ArrayList<>()
+		);
+
+		if (dto.categories() != null) {
+			for (CategoryDTO categoryDto : dto.categories()) {
+				Category category = new Category(
+						categoryDto.id(),
+						categoryDto.name(),
+						categoryDto.description(),
+						expense
+				);
+				expense.addCategory(category);
+			}
+		}
+
+		return expense;
 	}
 }

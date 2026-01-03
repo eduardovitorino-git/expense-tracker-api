@@ -30,12 +30,17 @@ public class ExpenseController {
 	public List<ExpenseDTO> getAll() {
 		return service.findAll();
 	}
+
+	@GetMapping("/expenses/amount/{amount}")
+	public List<ExpenseDTO> getAllByAmount(@PathVariable Long amount) {
+		return service.findAll(amount);
+	}
 	
     @GetMapping("/expenses/{id}")
     public ExpenseDTO getExpense(@PathVariable Long id) {
     	return service.findById(id);
     }
-    
+
     @PostMapping("/expenses")
     public ExpenseDTO addExpense(@RequestBody ExpenseDTO expenseDTO) {
         return service.save(expenseDTO);

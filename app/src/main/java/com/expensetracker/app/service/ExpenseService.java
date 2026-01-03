@@ -9,11 +9,11 @@ import com.expensetracker.app.entity.ExpenseDTO;
 public interface ExpenseService {
 
 	List<ExpenseDTO> findAll();
+
+	List<ExpenseDTO> findAll(Long amount);
 	
 	ExpenseDTO findById(Long theId);
 	
-	ExpenseDTO findByIdJoinFetch(Long theId);
-
 	ExpenseDTO save(ExpenseDTO expense);
 	
 	ExpenseDTO update(Long id, Map<String, Object> patchPayload);
