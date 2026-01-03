@@ -3,6 +3,7 @@ package com.expensetracker.app.controller;
 import java.util.List;
 import java.util.Map;
 
+import com.expensetracker.app.utils.DateRangeParam;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -31,9 +32,14 @@ public class ExpenseController {
 		return service.findAll();
 	}
 
-	@GetMapping("/expenses/amount/{amount}")
-	public List<ExpenseDTO> getAllByAmount(@PathVariable Long amount) {
-		return service.findAll(amount);
+	@GetMapping("/expenses/category/{category}")
+	public List<ExpenseDTO> getAllByAmount(@PathVariable String category) {
+		return service.findAll(category);
+	}
+
+	@GetMapping("/expenses/dateRange")
+	public List<ExpenseDTO> getAllByAmount(@RequestBody DateRangeParam dateRange) {
+		return service.findAll(dateRange);
 	}
 	
     @GetMapping("/expenses/{id}")

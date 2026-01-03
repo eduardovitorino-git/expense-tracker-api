@@ -18,8 +18,8 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long>, Expense
 			"WHERE e.id = :id")
 	Optional<Expense> findByIdJoinFetch(@Param("status") Long id);
 
-//	@Query("SELECT DISTINCT e " +
-//			" FROM Expense e " +
-//			" LEFT JOIN FETCH e.listCategory")
-//	List<Expense> findAllJoinFetch(Sort sort);
+	@Query("SELECT DISTINCT e " +
+			" FROM Expense e " +
+			" LEFT JOIN FETCH e.listCategory")
+	List<Expense> findAllJoinFetch(Sort sort);
 }

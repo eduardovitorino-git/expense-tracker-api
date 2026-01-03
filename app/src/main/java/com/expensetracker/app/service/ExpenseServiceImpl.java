@@ -2,6 +2,7 @@ package com.expensetracker.app.service;
 
 import java.util.*;
 
+import com.expensetracker.app.utils.DateRangeParam;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -36,17 +37,27 @@ public class ExpenseServiceImpl implements ExpenseService {
 	
 	@Override
 	public List<ExpenseDTO> findAll() {
-		return repo.findAllJoinFetch(Sort.by("amount"), new HashMap<>()).stream()
+		return repo.findAllJoinFetch(Sort.by("amount")).stream()
 				.map(this::toDTO)
 				.toList();
 	}
 
 	@Override
-	public List<ExpenseDTO> findAll(Long amount) {
-		Map<String, Long> criteria = new HashMap<>();
-		criteria.put("amount", amount);
+	public List<ExpenseDTO> findAll(String categoryName) {
+		Map<String, String> criteria = new HashMap<>();
+		criteria.put("categoryName", categoryName);
 
 		return repo.findAllJoinFetch(Sort.by("amount"), criteria).stream()
+				.map(this::toDTO)
+				.toList();
+	}
+
+	@Override
+	public List<ExpenseDTO> findAll(DateRangeParam dateRange) {
+		Map<String, DateRangeParam> criteria = new HashMap<>();
+		criteria.put("DateRangeParam", dateRange);
+
+		return repo.findAllDataRange(Sort.by("amount"), criteria).stream()
 				.map(this::toDTO)
 				.toList();
 	}
