@@ -77,32 +77,30 @@ public class ExpenseServiceImpl implements ExpenseService {
 	@Override
 	public ExpenseDTO update(Long id, Map<String, Object> patchPayload) {
 		Optional<Expense> expenseDb = repo.findById(id);
-		if(!expenseDb.isPresent()) throw new ExpenseNotFoundException("Expense not found. ID: " + id);
+
+		if(expenseDb.isEmpty()) throw new ExpenseNotFoundException("Expense not found. ID: " + id);
 		if(patchPayload.containsKey("id")) throw new RuntimeException("Not allowed to change the ID.");
+
 		ExpenseDTO patchedExpenseDTO = apply(patchPayload, expenseDb.get());
 		Expense patchedExpense = toEntity(patchedExpenseDTO);
+
 		return toDTO(repo.save(patchedExpense));
 	}
 
 	@Override
 	public String deleteById(Long id) {
-		Expense expense = new Expense();
 		Optional<Expense> dbExpense = repo.findById(id);
-		if(!dbExpense.isPresent()) throw new ExpenseNotFoundException("Expense not found. ID: " + id);
-		expense = dbExpense.get();
+		if(dbExpense.isEmpty()) throw new ExpenseNotFoundException("Expense not found. ID: " + id);
+		Expense expense = dbExpense.get();
 		expense.delete();
 		repo.save(expense);
 		return "Sucesso";
 	}
 	
-	private ExpenseDTO apply(Map<String, Object> patchPayload, Expense player) {
-		// Convert the class to JSON
-		ObjectNode expenseNode = this.objectMapper.convertValue(player, ObjectNode.class);
-		// Convert the Map to JSON
+	private ExpenseDTO apply(Map<String, Object> patchPayload, Expense expense) {
+		ObjectNode expenseNode = this.objectMapper.convertValue(expense, ObjectNode.class);
 		ObjectNode patchNode = this.objectMapper.convertValue(patchPayload, ObjectNode.class);
-		// Apply the differences
 		expenseNode.setAll(patchNode);
-		// Convert back to Expense object and return it
 		return this.objectMapper.convertValue(expenseNode, ExpenseDTO.class);
 	}
 	

@@ -92,6 +92,7 @@ public class Expense {
 	}
 	
 	public Expense(Long id, Long amount, String description, String paymentMethod, boolean recurring, List<Category> listCategory) {
+		this.id = id;
 		this.amount = amount;
 		this.description = description;
 		this.paymentMethod = paymentMethod;

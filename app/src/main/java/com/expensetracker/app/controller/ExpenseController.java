@@ -22,7 +22,7 @@ import com.expensetracker.app.service.ExpenseService;
 @RequestMapping("/api")
 public class ExpenseController {
 	
-	private ExpenseService service;
+	private final ExpenseService service;
 	
 	public ExpenseController(ExpenseService expenseService) {
 		this.service = expenseService;
@@ -39,7 +39,7 @@ public class ExpenseController {
 	}
 
 	@GetMapping("/expenses/date-range")
-	public List<ExpenseDTO> getAllByAmount(@RequestBody DateRangeParam dateRange) {
+	public List<ExpenseDTO> getByDateRange(@RequestBody DateRangeParam dateRange) {
 		return service.findAll(dateRange);
 	}
 
@@ -63,11 +63,6 @@ public class ExpenseController {
         return service.save(expenseDTO);
     }
 
-    @PutMapping("/expenses")
-    public ExpenseDTO updateExpense(@RequestBody ExpenseDTO expenseDTO) {
-    	return service.save(expenseDTO);
-    }
-	
 	@PatchMapping("/expenses/{id}")
 	public ExpenseDTO patch(@PathVariable Long id, @RequestBody Map<String, Object> patchPayload) {
 		return service.update(id, patchPayload);
