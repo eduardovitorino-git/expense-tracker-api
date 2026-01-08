@@ -36,8 +36,8 @@ public class ExpenseServiceImpl implements ExpenseService {
 	}
 	
 	@Override
-	public List<ExpenseDTO> findAll() {
-		return repo.findAllJoinFetch(Sort.by("amount")).stream()
+	public List<ExpenseDTO> findAll(Sort sort) {
+		return repo.findAllJoinFetch(sort).stream()
 				.map(this::toDTO)
 				.toList();
 	}

@@ -1,6 +1,6 @@
 package com.expensetracker.app.utils;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class DateRangeParam {
     private Date initialDate;

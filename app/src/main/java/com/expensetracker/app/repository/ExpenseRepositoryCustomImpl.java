@@ -7,8 +7,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.data.domain.Sort;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -62,8 +65,19 @@ public class ExpenseRepositoryCustomImpl implements ExpenseRepositoryCustom {
         if(criteria.containsKey("DateRangeParam")) {
             DateRangeParam dateRangeParam = criteria.get("DateRangeParam");
             Path<Date> dateRange = root.get("createdAt");
-            query.select(root).where(cb.greaterThanOrEqualTo(dateRange, dateRangeParam.getInitialDate()));
-            query.select(root).where(cb.lessThanOrEqualTo(dateRange, dateRangeParam.getFinalDate()));
+
+            LocalDate finalLocalDate = dateRangeParam.getFinalDate().toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate();
+
+            LocalDateTime startOfNextDay = finalLocalDate.plusDays(1).atStartOfDay();
+            Date nextDay = Date.from(startOfNextDay.atZone(ZoneId.systemDefault()).toInstant());
+
+
+            Predicate greaterThan = cb.greaterThanOrEqualTo(dateRange, dateRangeParam.getInitialDate());
+            Predicate lessThan = cb.lessThan(dateRange, nextDay);
+
+            query.select(root).where(cb.and(greaterThan, lessThan));
         }
 
         if (sort != null && sort.isSorted()) {

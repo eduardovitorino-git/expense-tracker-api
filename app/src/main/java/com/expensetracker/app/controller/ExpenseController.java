@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.expensetracker.app.utils.DateRangeParam;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,7 +30,7 @@ public class ExpenseController {
 	
 	@GetMapping("/expenses")
 	public List<ExpenseDTO> getAll() {
-		return service.findAll();
+		return service.findAll(Sort.by("createdAt").descending());
 	}
 
 	@GetMapping("/expenses/category/{category}")
@@ -37,9 +38,19 @@ public class ExpenseController {
 		return service.findAll(category);
 	}
 
-	@GetMapping("/expenses/dateRange")
+	@GetMapping("/expenses/date-range")
 	public List<ExpenseDTO> getAllByAmount(@RequestBody DateRangeParam dateRange) {
 		return service.findAll(dateRange);
+	}
+
+	@GetMapping("/expenses/min-amount")
+	public ExpenseDTO getMinAmount() {
+		return service.findAll(Sort.by("amount").ascending()).getFirst();
+	}
+
+	@GetMapping("/expenses/max-amount")
+	public ExpenseDTO getMaxAmount() {
+		return service.findAll(Sort.by("amount").descending()).getFirst();
 	}
 	
     @GetMapping("/expenses/{id}")
