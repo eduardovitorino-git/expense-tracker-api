@@ -20,7 +20,7 @@ public interface ExpenseService {
 	
 	ExpenseDTO save(ExpenseDTO expense);
 	
-	ExpenseDTO update(Long id, Map<String, Object> patchPayload);
+//	ExpenseDTO update(ExpenseDTO expenseDTO);
 
     String deleteById(Long theId);
     

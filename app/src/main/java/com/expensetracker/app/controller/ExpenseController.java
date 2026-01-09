@@ -63,11 +63,11 @@ public class ExpenseController {
         return service.save(expenseDTO);
     }
 
-	@PatchMapping("/expenses/{id}")
-	public ExpenseDTO patch(@PathVariable Long id, @RequestBody Map<String, Object> patchPayload) {
-		return service.update(id, patchPayload);
+	@PutMapping("/expenses")
+	public ExpenseDTO updateExpense(@RequestBody ExpenseDTO expenseDTO) {
+		return service.save(expenseDTO);
 	}
-	
+
 	@DeleteMapping("/expenses/{id}")
 	public String delete(@PathVariable Long id) {
 		return service.deleteById(id);

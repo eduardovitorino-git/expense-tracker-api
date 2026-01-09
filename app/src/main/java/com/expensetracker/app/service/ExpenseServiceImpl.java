@@ -73,19 +73,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 	public List<Category> findCategoriesByExpenseId(Long theId) {
 		return categoryService.findAllByExpenseId(theId);
 	}
-	
-	@Override
-	public ExpenseDTO update(Long id, Map<String, Object> patchPayload) {
-		Optional<Expense> expenseDb = repo.findById(id);
-
-		if(expenseDb.isEmpty()) throw new ExpenseNotFoundException("Expense not found. ID: " + id);
-		if(patchPayload.containsKey("id")) throw new RuntimeException("Not allowed to change the ID.");
-
-		ExpenseDTO patchedExpenseDTO = apply(patchPayload, expenseDb.get());
-		Expense patchedExpense = toEntity(patchedExpenseDTO);
-
-		return toDTO(repo.save(patchedExpense));
-	}
 
 	@Override
 	public String deleteById(Long id) {
@@ -95,13 +82,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 		expense.delete();
 		repo.save(expense);
 		return "Sucesso";
-	}
-	
-	private ExpenseDTO apply(Map<String, Object> patchPayload, Expense expense) {
-		ObjectNode expenseNode = this.objectMapper.convertValue(expense, ObjectNode.class);
-		ObjectNode patchNode = this.objectMapper.convertValue(patchPayload, ObjectNode.class);
-		expenseNode.setAll(patchNode);
-		return this.objectMapper.convertValue(expenseNode, ExpenseDTO.class);
 	}
 	
 	private List<CategoryDTO> categoryToDTO(List<Category> categories) {
