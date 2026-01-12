@@ -1,6 +1,7 @@
 package com.expensetracker.app.entity;
 
 import java.sql.Date;
+import java.util.List;
 
 public record CategoryDTO(
 			Long id,
@@ -8,5 +9,6 @@ public record CategoryDTO(
 			String description,
 			boolean deleted,
 			Date createdAt,
-			Date updatedAt
+			Date updatedAt,
+			List<Expense> expenses
 		) {}

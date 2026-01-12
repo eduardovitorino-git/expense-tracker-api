@@ -16,9 +16,9 @@ public class CategoryServiceImpl implements CategoryService {
 		this.repo = categoryRepository;
 	}
 
-	@Override
-	public List<Category> findAllByExpenseId(Long expenseId) {
-		return repo.findAllByExpenseId(expenseId);
-	}
+//	@Override
+//	public List<Category> findAllByExpenseId(Long expenseId) {
+//		return repo.findAllByExpenseId(expenseId);
+//	}
 	
 }

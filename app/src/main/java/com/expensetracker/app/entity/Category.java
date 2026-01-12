@@ -2,16 +2,10 @@ package com.expensetracker.app.entity;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name="category")
@@ -37,9 +31,11 @@ public class Category {
 	@Column(name="updatedAt")
 	private Date updatedAt;
 
-	@ManyToOne(cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	@JoinColumn(name="expense_id")
-	private Expense expense;
+	@OneToMany(mappedBy="category",
+			fetch=FetchType.LAZY,
+			cascade={CascadeType.DETACH, CascadeType.MERGE,
+					CascadeType.PERSIST, CascadeType.REFRESH})
+	private List<Expense> expenses;
 
 	public Category() { }
 	
@@ -50,16 +46,17 @@ public class Category {
 		this.deleted = deleted;
 	}
 	
-	public Category(Long id, String name, String description, Expense expense) {
+	public Category(Long id, String name, String description) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.createdAt = Date.valueOf(LocalDate.now());
-		this.expense = expense;
 	}
 	
 	public void addExpense(Expense expense) {
-		this.expense = expense;
+		if(expenses == null) expenses = new ArrayList<>();
+		expense.setCategory(this);
+		expenses.add(expense);
 	}
 	
 	public Long getId() {
@@ -86,8 +83,8 @@ public class Category {
 		return updatedAt;
 	}
 
-	public Expense getExpense() {
-		return expense;
+	public List<Expense> getExpenses() {
+		return expenses;
 	}
 
 	@Override

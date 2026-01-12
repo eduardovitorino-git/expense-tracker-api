@@ -9,6 +9,6 @@ import com.expensetracker.app.entity.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-	@Query("SELECT category FROM Category category WHERE category.expense.id = ?1")
-	List<Category> findAllByExpenseId(Long expenseId);
+//	@Query("SELECT category FROM Category category WHERE category.expense.id = ?1")
+//	List<Category> findAllByExpenseId(Long expenseId);
 }

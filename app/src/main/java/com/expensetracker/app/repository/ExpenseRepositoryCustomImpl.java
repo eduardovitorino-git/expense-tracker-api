@@ -30,8 +30,8 @@ public class ExpenseRepositoryCustomImpl implements ExpenseRepositoryCustom {
 
         Root<Expense> root = query.from(Expense.class);
 
-        root.fetch("listCategory", JoinType.LEFT);
-        Join<Expense, Category> categoryJoin = root.join("listCategory", JoinType.LEFT);
+        root.fetch("category", JoinType.LEFT);
+        Join<Expense, Category> categoryJoin = root.join("category", JoinType.LEFT);
 
         if(criteria.containsKey("categoryName")) {
             String categoryName = criteria.get("categoryName");
@@ -60,7 +60,7 @@ public class ExpenseRepositoryCustomImpl implements ExpenseRepositoryCustom {
         CriteriaQuery<Expense> query = cb.createQuery(Expense.class);
 
         Root<Expense> root = query.from(Expense.class);
-        root.fetch("listCategory", JoinType.LEFT);
+        root.fetch("category", JoinType.LEFT);
 
         if(criteria.containsKey("DateRangeParam")) {
             DateRangeParam dateRangeParam = criteria.get("DateRangeParam");

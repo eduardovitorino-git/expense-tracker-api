@@ -24,5 +24,5 @@ public interface ExpenseService {
 
     String deleteById(Long theId);
     
-    public List<Category> findCategoriesByExpenseId(Long theId);
+//    public List<Category> findCategoriesByExpenseId(Long theId);
 }

@@ -14,12 +14,12 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long>, Expense
 
 	@Query("SELECT e " +
 			"FROM Expense e " +
-			"JOIN FETCH e.listCategory " +
+			"JOIN FETCH e.category " +
 			"WHERE e.id = :id")
 	Optional<Expense> findByIdJoinFetch(@Param("id") Long id);
 
 	@Query("SELECT DISTINCT e " +
 			" FROM Expense e " +
-			" LEFT JOIN FETCH e.listCategory")
+			" LEFT JOIN FETCH e.category")
 	List<Expense> findAllJoinFetch(Sort sort);
 }

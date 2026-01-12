@@ -3,6 +3,7 @@ package com.expensetracker.app.service;
 import java.util.*;
 
 import com.expensetracker.app.utils.DateRangeParam;
+import com.expensetracker.app.utils.ExpenseMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -18,23 +19,26 @@ public class ExpenseServiceImpl implements ExpenseService {
 
 	private final ExpenseRepository repo;
 	private final CategoryService categoryService;
+	private final ExpenseMapper mapper;
 
 	public ExpenseServiceImpl(ExpenseRepository expenseRepository,
-			CategoryService categoryService) {
+			CategoryService categoryService,
+			ExpenseMapper mapper) {
 		this.repo = expenseRepository;
 		this.categoryService = categoryService;
+		this.mapper = mapper;
 	}
 	
 	@Override
 	public ExpenseDTO save(ExpenseDTO expenseDTO) {
-		Expense expense = toEntity(expenseDTO);
-		return toDTO(repo.save(expense));
+		Expense expense = mapper.toEntity(expenseDTO);
+		return mapper.toDto(repo.save(expense));
 	}
 	
 	@Override
 	public List<ExpenseDTO> findAll(Sort sort) {
 		return repo.findAllJoinFetch(sort).stream()
-				.map(this::toDTO)
+				.map(mapper::toDto)
 				.toList();
 	}
 
@@ -44,7 +48,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 		criteria.put("categoryName", categoryName);
 
 		return repo.findAllJoinFetch(Sort.by("amount"), criteria).stream()
-				.map(this::toDTO)
+				.map(mapper::toDto)
 				.toList();
 	}
 
@@ -54,21 +58,21 @@ public class ExpenseServiceImpl implements ExpenseService {
 		criteria.put("DateRangeParam", dateRange);
 
 		return repo.findAllDataRange(Sort.by("amount"), criteria).stream()
-				.map(this::toDTO)
+				.map(mapper::toDto)
 				.toList();
 	}
 
 	@Override
 	public ExpenseDTO findById(Long id) {
 		return repo.findByIdJoinFetch(id)
-			    .map(this::toDTO)
+			    .map(mapper::toDto)
 			    .orElseThrow(() -> new ExpenseNotFoundException("Expense not found. ID: " + id));
 	}
 	
-	@Override
-	public List<Category> findCategoriesByExpenseId(Long theId) {
-		return categoryService.findAllByExpenseId(theId);
-	}
+//	@Override
+//	public List<Category> findCategoriesByExpenseId(Long theId) {
+//		return categoryService.findAllByExpenseId(theId);
+//	}
 
 	@Override
 	public String deleteById(Long id) {
@@ -78,64 +82,5 @@ public class ExpenseServiceImpl implements ExpenseService {
 		expense.delete();
 		repo.save(expense);
 		return "Sucesso";
-	}
-	
-	private List<CategoryDTO> categoryToDTO(List<Category> categories) {
-	    if (categories == null) return null;
-	    List<CategoryDTO> categoryDtos = new ArrayList<>();
-	    
-	    for(Category category : categories) {
-	    	categoryDtos.add(new CategoryDTO(
-	    		category.getId(),
-	    		category.getName(),
-	    		category.getDescription(),
-	    		category.isDeleted(),
-	    		category.getCreatedAt(),
-	    		category.getUpdatedAt()
-		    ));
-	    }
-	    
-	    return categoryDtos;
-	}
-	
-	private ExpenseDTO toDTO(Expense expense) {
-	    return new ExpenseDTO(
-	        expense.getId(),
-	        expense.getAmount(),
-	        expense.getDescription(),
-	        expense.getLocation(),
-	        expense.getMerchant(),
-	        expense.getPaymentMethod(),
-	        expense.isDeleted(),
-	        expense.isRecurring(),
-	        expense.getCreatedAt(),
-	        expense.getUpdatedAt(),
-	        categoryToDTO(expense.getListCategory())
-	    );
-	}
-	
-	private Expense toEntity(ExpenseDTO dto) {
-		Expense expense = new Expense(
-				dto.id(),
-				dto.amount(),
-				dto.description(),
-				dto.paymentMethod(),
-				dto.recurring(),
-				new ArrayList<>()
-		);
-
-		if (dto.categories() != null) {
-			for (CategoryDTO categoryDto : dto.categories()) {
-				Category category = new Category(
-						categoryDto.id(),
-						categoryDto.name(),
-						categoryDto.description(),
-						expense
-				);
-				expense.addCategory(category);
-			}
-		}
-
-		return expense;
 	}
 }
