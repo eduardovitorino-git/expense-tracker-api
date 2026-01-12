@@ -64,18 +64,10 @@ public class ExpenseRepositoryCustomImpl implements ExpenseRepositoryCustom {
 
         if(criteria.containsKey("DateRangeParam")) {
             DateRangeParam dateRangeParam = criteria.get("DateRangeParam");
-            Path<Date> dateRange = root.get("createdAt");
-
-            LocalDate finalLocalDate = dateRangeParam.getFinalDate().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-
-            LocalDateTime startOfNextDay = finalLocalDate.plusDays(1).atStartOfDay();
-            Date nextDay = Date.from(startOfNextDay.atZone(ZoneId.systemDefault()).toInstant());
-
+            Path<LocalDateTime> dateRange = root.get("createdAt");
 
             Predicate greaterThan = cb.greaterThanOrEqualTo(dateRange, dateRangeParam.getInitialDate());
-            Predicate lessThan = cb.lessThan(dateRange, nextDay);
+            Predicate lessThan = cb.lessThan(dateRange, dateRangeParam.getFinalDate());
 
             query.select(root).where(cb.and(greaterThan, lessThan));
         }

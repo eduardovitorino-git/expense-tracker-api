@@ -1,7 +1,7 @@
 package com.expensetracker.app.entity;
 
 import java.sql.Date;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +48,7 @@ public class Expense {
 	private boolean recurring;
 	
 	@Column(name="createdAt")
-	private Date createdAt;
+	private LocalDateTime createdAt;
 	
 	@Column(name="updatedAt")
 	private Date updatedAt;
@@ -66,7 +66,7 @@ public class Expense {
 	public Expense() { }
 
 	public Expense(Long amount, String description, String location,
-			String merchant, String paymentMethod, boolean deleted, boolean recurring, Date createdAt, Date updatedAt) {
+			String merchant, String paymentMethod, boolean deleted, boolean recurring, LocalDateTime createdAt, Date updatedAt) {
 		this.amount = amount;
 		this.description = description;
 		this.location = location;
@@ -79,7 +79,7 @@ public class Expense {
 	}
 	
 	public Expense(Long id, Long amount, String description, String location,
-			String merchant, String paymentMethod, boolean deleted, boolean recurring, Date createdAt, Date updatedAt, Receipt receipt) {
+			String merchant, String paymentMethod, boolean deleted, boolean recurring, LocalDateTime createdAt, Date updatedAt, Receipt receipt) {
 		this.amount = amount;
 		this.description = description;
 		this.location = location;
@@ -97,7 +97,7 @@ public class Expense {
 		this.description = description;
 		this.paymentMethod = paymentMethod;
 		this.recurring = recurring;
-		this.createdAt = Date.valueOf(LocalDate.now());
+		this.createdAt = LocalDateTime.now();
 		this.listCategory = listCategory;
 	}
 	
@@ -147,7 +147,7 @@ public class Expense {
 		return recurring;
 	}
 
-	public Date getCreatedAt() {
+	public LocalDateTime getCreatedAt() {
 		return createdAt;
 	}
 

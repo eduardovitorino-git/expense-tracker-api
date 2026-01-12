@@ -1,28 +1,29 @@
 package com.expensetracker.app.utils;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class DateRangeParam {
-    private Date initialDate;
-    private Date finalDate;
+    private LocalDateTime initialDate;
+    private LocalDateTime finalDate;
 
-    public DateRangeParam() {
-
+    public DateRangeParam(LocalDateTime initialDate, LocalDateTime finalDate) {
+        this.initialDate = initialDate;
+        this.finalDate = finalDate;
     }
 
-    public Date getInitialDate() {
+    public LocalDateTime getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(Date initialDate) {
+    public void setInitialDate(LocalDateTime initialDate) {
         this.initialDate = initialDate;
     }
 
-    public Date getFinalDate() {
+    public LocalDateTime getFinalDate() {
         return finalDate;
     }
 
-    public void setFinalDate(Date finalDate) {
+    public void setFinalDate(LocalDateTime finalDate) {
         this.finalDate = finalDate;
     }
 }

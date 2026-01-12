@@ -12,21 +12,17 @@ import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.entity.ExpenseDTO;
 import com.expensetracker.app.exception.ExpenseNotFoundException;
 import com.expensetracker.app.repository.ExpenseRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
 
 	private final ExpenseRepository repo;
 	private final CategoryService categoryService;
-	private final ObjectMapper objectMapper;
-	
-	public ExpenseServiceImpl(ExpenseRepository expenseRepository, 
-			CategoryService categoryService, ObjectMapper objectMapper) {
+
+	public ExpenseServiceImpl(ExpenseRepository expenseRepository,
+			CategoryService categoryService) {
 		this.repo = expenseRepository;
 		this.categoryService = categoryService;
-		this.objectMapper = objectMapper;
 	}
 	
 	@Override
