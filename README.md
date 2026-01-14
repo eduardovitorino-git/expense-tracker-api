@@ -29,11 +29,12 @@ A API estará disponível em `http://localhost:8080`
 Swagger UI: `http://localhost:8080/docs`
 
 ## Principais endpoints
-| Método | Rota | Descrição |
-|--------|------|-----------|
-| GET | /api/expenses | Listar todas as despesas |
-| GET | /api/expenses/{id} | Buscar despesa por ID |
-| POST | /api/expenses | Criar nova despesa |
-| PUT | /api/expenses | Atualizar despesa (completa) |
-| PATCH | /api/expenses/{id} | Atualizar despesa (parcial) |
-| DELETE | /api/expenses/{id} | Remover despesa |
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| GET | /api/expenses | Lista despesas do usuário |
+| GET | /api/expenses/{id} | Busca despesa por ID |
+| GET | /api/expenses/category/{name} | Filtra por categoria |
+| GET | /api/expenses?startDate=X&endDate=Y | Filtra por período |
+| POST | /api/expenses | Cria nova despesa |
+| PUT | /api/expenses/{id} | Atualiza despesa |
+| DELETE | /api/expenses/{id} | Remove despesa (soft delete) |
