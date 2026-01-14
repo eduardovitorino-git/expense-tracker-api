@@ -35,6 +35,8 @@ Swagger UI: `http://localhost:8080/docs`
 | GET | /api/expenses/{id} | Busca despesa por ID |
 | GET | /api/expenses/category/{name} | Filtra por categoria |
 | GET | /api/expenses?startDate=X&endDate=Y | Filtra por período |
+| GET | /api//expenses/min-amount| Filtra por valor mínimo |
+| GET | /api//expenses/max-amount| Filtra por valor máximo |
 | POST | /api/expenses | Cria nova despesa |
 | PUT | /api/expenses/{id} | Atualiza despesa |
 | DELETE | /api/expenses/{id} | Remove despesa (soft delete) |
