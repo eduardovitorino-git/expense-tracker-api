@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.expensetracker.app.utils.DateRangeParam;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -56,12 +57,12 @@ public class ExpenseController {
     }
 
     @PostMapping("/expenses")
-    public ExpenseDTO addExpense(@RequestBody ExpenseDTO expenseDTO) {
+    public ExpenseDTO addExpense(@Valid @RequestBody ExpenseDTO expenseDTO) {
         return service.save(expenseDTO);
     }
 
 	@PutMapping("/expenses")
-	public ExpenseDTO updateExpense(@RequestBody ExpenseDTO expenseDTO) {
+	public ExpenseDTO updateExpense(@Valid @RequestBody ExpenseDTO expenseDTO) {
 		return service.save(expenseDTO);
 	}
 

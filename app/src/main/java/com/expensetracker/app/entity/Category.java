@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="category")
+@Getter
+@Setter
 public class Category {
 
 	@Id
@@ -59,34 +63,6 @@ public class Category {
 		expenses.add(expense);
 	}
 	
-	public Long getId() {
-		return id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public Date getCreatedAt() {
-		return createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public List<Expense> getExpenses() {
-		return expenses;
-	}
-
 	@Override
 	public String toString() {
 		return "Category [id=" + id + ", name=" + name + ", description=" + description + ", deleted=" + deleted

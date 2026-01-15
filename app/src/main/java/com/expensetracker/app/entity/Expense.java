@@ -5,9 +5,13 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="expense")
+@Getter
+@Setter
 public class Expense {
 
 	@Id
@@ -86,54 +90,6 @@ public class Expense {
 		this.deleted = true;
 	}
 
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-	
-	public Long getId() {
-		return id;
-	}
-
-	public BigDecimal getAmount() {
-		return amount;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public String getLocation() {
-		return location;
-	}
-
-	public String getPaymentMethod() {
-		return paymentMethod;
-	}
-
-	public boolean isDeleted() {
-		return deleted;
-	}
-
-	public boolean isRecurring() {
-		return recurring;
-	}
-
-	public LocalDateTime getCreatedAt() {
-		return createdAt;
-	}
-
-	public Date getUpdatedAt() {
-		return updatedAt;
-	}
-
-	public Receipt getReceipt() {
-		return receipt;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-	
 	@Override
 	public String toString() {
 		return "Expense [id=" + id + ", amount=" + amount

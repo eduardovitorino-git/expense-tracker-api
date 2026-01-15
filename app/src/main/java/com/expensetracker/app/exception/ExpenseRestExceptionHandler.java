@@ -2,8 +2,11 @@ package com.expensetracker.app.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.util.stream.Collectors;
 
 /**
  * @ControllerAdvice is global exception handler
@@ -46,4 +49,21 @@ public class ExpenseRestExceptionHandler {
 		 */ 
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+
+	@ExceptionHandler
+	public ResponseEntity<ExpenseErrorResponse> error(MethodArgumentNotValidException exec) {
+		String message = exec.getBindingResult()
+				.getFieldErrors()
+				.stream()
+				.map(error -> error.getField() + ": " + error.getDefaultMessage())
+				.collect(Collectors.joining(", "));
+
+		ExpenseErrorResponse error = new ExpenseErrorResponse();
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.setMessage(message);
+		error.setTimestamp(System.currentTimeMillis());
+
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
 }
