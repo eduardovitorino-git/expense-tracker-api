@@ -16,7 +16,7 @@ public record ExpenseDTO(
 		 @Positive(message = "Amount must be more than zero")
 		 BigDecimal amount,
 
-		 @NotBlank(message = "Description é obrigatória")
+		 @NotBlank(message = "Description is required")
 		 String description,
 
 		 String location,

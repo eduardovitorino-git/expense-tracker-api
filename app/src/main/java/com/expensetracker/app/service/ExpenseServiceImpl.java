@@ -7,8 +7,6 @@ import com.expensetracker.app.utils.ExpenseMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.expensetracker.app.entity.Category;
-import com.expensetracker.app.entity.CategoryDTO;
 import com.expensetracker.app.entity.Expense;
 import com.expensetracker.app.entity.ExpenseDTO;
 import com.expensetracker.app.exception.ExpenseNotFoundException;
@@ -18,14 +16,12 @@ import com.expensetracker.app.repository.ExpenseRepository;
 public class ExpenseServiceImpl implements ExpenseService {
 
 	private final ExpenseRepository repo;
-	private final CategoryService categoryService;
 	private final ExpenseMapper mapper;
 
 	public ExpenseServiceImpl(ExpenseRepository expenseRepository,
 			CategoryService categoryService,
 			ExpenseMapper mapper) {
 		this.repo = expenseRepository;
-		this.categoryService = categoryService;
 		this.mapper = mapper;
 	}
 	
@@ -69,11 +65,6 @@ public class ExpenseServiceImpl implements ExpenseService {
 			    .orElseThrow(() -> new ExpenseNotFoundException("Expense not found. ID: " + id));
 	}
 	
-//	@Override
-//	public List<Category> findCategoriesByExpenseId(Long theId) {
-//		return categoryService.findAllByExpenseId(theId);
-//	}
-
 	@Override
 	public String deleteById(Long id) {
 		Optional<Expense> dbExpense = repo.findById(id);
